@@ -870,11 +870,24 @@
         <div id="chat-popup-box" class="chat-popup-box"></div>
 
         <div class="chat-popup-input">
-            <input id="chat-popup-input" type="text" placeholder="Type message..." onkeypress="if(event.key==='Enter'){event.preventDefault();window.chatSendMessage();}" />
-            <button id="chat-popup-send" onclick="window.chatSendMessage();">Send</button>
+            <input id="chat-popup-input" type="text" placeholder="Type message..." onkeypress="if(event.key==='Enter'){event.preventDefault();sendChatMessage();}" />
+            <button id="chat-popup-send" onclick="sendChatMessage();">Send</button>
         </div>
     </div>
 
+    <script>
+        // Define fallback function immediately
+        function sendChatMessage() {
+            if (window.chatSendMessage && typeof window.chatSendMessage === 'function') {
+                window.chatSendMessage();
+            } else {
+                console.log('Chatbot not ready yet, please wait...');
+                // Try again in a moment
+                setTimeout(sendChatMessage, 100);
+            }
+        }
+    </script>
+    
     <script src="chat_float.js"></script>
 </body>
 </html>

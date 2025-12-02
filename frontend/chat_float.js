@@ -18,8 +18,21 @@ function getCurrentLang() {
 
 // Global handler for inline events - defined early so it's available for inline handlers
 window.chatSendMessage = function() {
-    sendMessage();
+    if (initialized && input && sendBtn) {
+        sendMessage();
+    } else {
+        console.log('Chatbot: Not fully initialized yet');
+        // Try to initialize and then send
+        if (safeInit()) {
+            setTimeout(() => sendMessage(), 100);
+        }
+    }
 };
+
+// Also update the global sendChatMessage function if it exists
+if (typeof window.sendChatMessage === 'function') {
+    window.sendChatMessage = window.chatSendMessage;
+}
 
 window.chatKeyPress = function(e) {
     if (e.key === "Enter") {
