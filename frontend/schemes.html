@@ -547,10 +547,11 @@
     <script src="assets/js/config.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-        const BACKEND_URL = "https://rural-asist.onrender.com";
-        const CACHE_KEY = "schemes_cache";
-        const CACHE_TIME = 60 * 60 * 1000; // 1 hour
-        const SCHEMES_LANG_KEY = 'ruralassist_language';
+        // Use unique variable names to avoid conflicts with config.js
+        const SCHEMES_BACKEND_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
+        const SCHEMES_CACHE_KEY = "schemes_cache";
+        const SCHEMES_CACHE_TIME = 60 * 60 * 1000; // 1 hour
+        const SCHEMES_LANG_KEY = window.AppConfig?.STORAGE_KEYS?.LANGUAGE || 'ruralassist_language';
 
         let allSchemes = [];
         let isOnline = false;
@@ -595,7 +596,7 @@
 
         function checkOnlineStatus() {
             console.log("Checking online status...");
-            fetch(`${BACKEND_URL}/schemes/status`)
+            fetch(`${SCHEMES_BACKEND_URL}/schemes/status`)
                 .then(res => {
                     console.log("Status check response:", res.status);
                     return res.json();
@@ -642,11 +643,11 @@
 
         function getCachedSchemes() {
             try {
-                const cached = localStorage.getItem(CACHE_KEY);
+                const cached = localStorage.getItem(SCHEMES_CACHE_KEY);
                 if (!cached) return null;
 
                 const { schemes, timestamp } = JSON.parse(cached);
-                if (Date.now() - timestamp > CACHE_TIME) {
+                if (Date.now() - timestamp > SCHEMES_CACHE_TIME) {
                     localStorage.removeItem(CACHE_KEY);
                     return null;
                 }
@@ -658,7 +659,7 @@
 
         function setCachedSchemes(schemes) {
             try {
-                localStorage.setItem(CACHE_KEY, JSON.stringify({
+                localStorage.setItem(SCHEMES_CACHE_KEY, JSON.stringify({
                     schemes,
                     timestamp: Date.now()
                 }));
@@ -673,7 +674,7 @@
 
         async function loadSchemes() {
             console.log("=== loadSchemes() started ===");
-            console.log("Loading schemes from:", `${BACKEND_URL}/schemes/local`);
+            console.log("Loading schemes from:", `${SCHEMES_BACKEND_URL}/schemes/local`);
             
             // Show spinner
             const spinner = document.getElementById("spinner");
@@ -685,7 +686,7 @@
             try {
                 // Skip cache for now to debug - Fetch directly from backend
                 console.log("Fetching fresh schemes from backend...");
-                const response = await fetch(`${BACKEND_URL}/schemes/local`);
+                const response = await fetch(`${SCHEMES_BACKEND_URL}/schemes/local`);
                 console.log("Response status:", response.status, response.statusText);
                 
                 if (!response.ok) {
@@ -879,7 +880,7 @@
             btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Updating...';
 
             try {
-                const response = await fetch(`${BACKEND_URL}/schemes/update`, {
+                const response = await fetch(`${SCHEMES_BACKEND_URL}/schemes/update`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ query: "scheme", limit: 50 })
@@ -934,7 +935,7 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             console.log("DOM Content Loaded - Initializing schemes page");
-            console.log("Backend URL:", BACKEND_URL);
+            console.log("Backend URL:", SCHEMES_BACKEND_URL);
             console.log("Checking for required elements...");
             
             const grid = document.getElementById("schemesGrid");
