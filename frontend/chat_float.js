@@ -105,6 +105,12 @@ function safeInit() {
 }
 
 function greet() {
+    console.log("Chatbot: Starting greeting function");
+    if (!box) {
+        console.error("Chatbot: box element not found!");
+        return;
+    }
+    
     const lang = getCurrentLang();
     let greeting;
     
@@ -114,9 +120,11 @@ function greet() {
         greeting = "Hello! 👋 I'm your RuralAsist assistant.\n\nI can help you with:\n🏛️ Government Schemes\n📄 Document Scanning (OCR)\n🛡️ Scam Prevention\n\nAsk me in English or Hindi!";
     }
     
+    console.log("Chatbot: Adding greeting message");
     addMsg(greeting, "bot");
     addQuickReplies();
     box.dataset.greeted = "1";
+    console.log("Chatbot: Greeting completed");
 }
 
 function addQuickReplies() {
@@ -160,11 +168,18 @@ function addQuickReplies() {
 }
 
 function addMsg(text, sender) {
+    console.log("Chatbot: Adding message from", sender, ":", text.substring(0, 50) + "...");
+    if (!box) {
+        console.error("Chatbot: box element not found in addMsg!");
+        return;
+    }
+    
     const div = document.createElement("div");
     div.className = sender === "user" ? "msg user-msg" : "msg bot-msg";
     div.innerHTML = text.replace(/\n/g, '<br>');
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
+    console.log("Chatbot: Message added successfully, box children:", box.children.length);
 }
 
 function setSendingEnabled(enabled) {
