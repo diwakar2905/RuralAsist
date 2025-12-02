@@ -1,5 +1,5 @@
 // Use global config if available, fallback to direct URL
-const API_BASE_URL = window.AppConfig?.API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
   const emailEl = document.getElementById('prof-email');

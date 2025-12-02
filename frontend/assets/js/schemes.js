@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // API Configuration
-    const SCHEMES_API_BASE_URL = "https://rural-asist.onrender.com";
+    const SCHEMES_API_BASE_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
     
     // Initialize AOS
     if (typeof AOS !== 'undefined') {
@@ -143,12 +143,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filters.state) params.append('state', filters.state);
         if (filters.category) params.append('category', filters.category);
 
-        const url = `${SCHEMES_API_BASE_URL}/schemes?${params.toString()}`;
+        // Use search endpoint if any filters, otherwise use local endpoint
+        const endpoint = (filters.q || filters.state || filters.category) ? '/schemes/search' : '/schemes/local';
+        const url = `${SCHEMES_API_BASE_URL}${endpoint}${(filters.q || filters.state || filters.category) ? '?' + params.toString() : ''}`;
 
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const schemes = await response.json();
+            const data = await response.json();
+            
+            // Handle different response formats
+            let schemes = [];
+            if (endpoint === '/schemes/local') {
+                schemes = data.schemes || [];
+            } else {
+                schemes = data.schemes || [];
+            }
+            
             renderSchemes(schemes);
         } catch (error) {
             console.error('Error fetching schemes:', error);

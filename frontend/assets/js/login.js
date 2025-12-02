@@ -1,5 +1,5 @@
-// Use global config if available, fallback to direct URL
-const API_BASE_URL = window.AppConfig?.API_BASE_URL || "http://127.0.0.1:8000";
+// Use global config if available, fallback to production URL
+const API_BASE_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
 const STORAGE_KEYS = window.AppConfig?.STORAGE_KEYS || {
     TOKEN: 'ruralassist_token',
     USER_EMAIL: 'user_email',

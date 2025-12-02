@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
 
 const chatBox = document.getElementById("chat-box");
 const chatInput = document.getElementById("chat-input");
