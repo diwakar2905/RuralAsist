@@ -594,13 +594,20 @@
         }
 
         function checkOnlineStatus() {
+            console.log("Checking online status...");
             fetch(`${BACKEND_URL}/schemes/status`)
-                .then(res => res.json())
+                .then(res => {
+                    console.log("Status check response:", res.status);
+                    return res.json();
+                })
                 .then(data => {
+                    console.log("Status data received:", data);
                     isOnline = data.status === "online";
                     updateStatusIndicator();
+                    console.log("Online status set to:", isOnline);
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.error("Status check failed:", error);
                     isOnline = false;
                     updateStatusIndicator();
                 });
@@ -665,54 +672,72 @@
         // ============================================================
 
         async function loadSchemes() {
+            console.log("=== loadSchemes() started ===");
             console.log("Loading schemes from:", `${BACKEND_URL}/schemes/local`);
             
             // Show spinner
-            document.getElementById("spinner").classList.add("active");
-            document.getElementById("schemesGrid").innerHTML = "";
+            const spinner = document.getElementById("spinner");
+            const grid = document.getElementById("schemesGrid");
+            
+            if (spinner) spinner.classList.add("active");
+            if (grid) grid.innerHTML = "";
 
             try {
-                // Try cache first
-                const cached = getCachedSchemes();
-                if (cached && cached.length > 0) {
-                    console.log("Using cached schemes:", cached.length);
-                    allSchemes = cached;
-                    renderSchemes(allSchemes);
-                    document.getElementById("spinner").classList.remove("active");
-                    return;
-                }
-
-                // Fetch from backend
+                // Skip cache for now to debug - Fetch directly from backend
                 console.log("Fetching fresh schemes from backend...");
                 const response = await fetch(`${BACKEND_URL}/schemes/local`);
                 console.log("Response status:", response.status, response.statusText);
                 
-                if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load schemes`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
 
                 const data = await response.json();
-                console.log("Received data:", data);
+                console.log("Raw response data:", data);
+                console.log("Data type:", typeof data);
+                console.log("Data keys:", Object.keys(data));
                 
                 allSchemes = data.schemes || [];
+                console.log("Extracted schemes array:", allSchemes);
                 console.log("Total schemes loaded:", allSchemes.length);
 
-                // Cache locally
+                // Always render, even if empty
+                renderSchemes(allSchemes);
+                
+                // Cache if successful
                 if (allSchemes.length > 0) {
                     setCachedSchemes(allSchemes);
                     console.log("Schemes cached successfully");
                 }
-
-                renderSchemes(allSchemes);
+                
             } catch (error) {
-                console.error("Error loading schemes:", error);
+                console.error("=== ERROR in loadSchemes ===");
+                console.error("Error details:", error);
+                console.error("Error message:", error.message);
+                console.error("Error stack:", error.stack);
+                
                 showNotification(`❌ Failed to load schemes: ${error.message}`, "error");
-                document.getElementById("emptyState").style.display = "block";
+                const emptyState = document.getElementById("emptyState");
+                if (emptyState) emptyState.style.display = "block";
+                
                 // Show error in grid as well
-                document.getElementById("schemesGrid").innerHTML = `
-                    <div class="col-12">
-                        <div class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Failed to Load Schemes</h4>
-                            <p>Error: ${error.message}</p>
-                            <hr>
+                if (grid) {
+                    grid.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">Failed to Load Schemes</h4>
+                                <p>Error: ${error.message}</p>
+                                <hr>
+                                <button class="btn btn-outline-danger" onclick="loadSchemes()">Try Again</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } finally {
+                if (spinner) spinner.classList.remove("active");
+                console.log("=== loadSchemes() completed ===");
+            }
+        }
                             <p class="mb-0">Please check your internet connection and try refreshing the page.</p>
                         </div>
                     </div>
