@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Config Test</title>
+</head>
+<body>
+    <h2>API Configuration Test</h2>
+    <div id="result"></div>
+
+    <script src="assets/js/config.production.js"></script>
+    <script>
+        document.getElementById('result').innerHTML = `
+            <p><strong>Production Config Loaded:</strong> ${window.APP_CONFIG ? 'YES' : 'NO'}</p>
+            <p><strong>API URL:</strong> ${window.APP_CONFIG ? window.APP_CONFIG.API_BASE_URL : 'Not loaded'}</p>
+            <p><strong>Environment:</strong> ${window.APP_CONFIG ? window.APP_CONFIG.ENVIRONMENT : 'Unknown'}</p>
+        `;
+    </script>
+</body>
+</html>
