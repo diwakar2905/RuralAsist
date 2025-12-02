@@ -698,7 +698,16 @@
                 console.log("Data type:", typeof data);
                 console.log("Data keys:", Object.keys(data));
                 
-                allSchemes = data.schemes || [];
+                // Check if data has schemes property, otherwise use data directly if it's an array
+                if (data.schemes && Array.isArray(data.schemes)) {
+                    allSchemes = data.schemes;
+                } else if (Array.isArray(data)) {
+                    allSchemes = data;
+                } else {
+                    console.warn("Unexpected data structure:", data);
+                    allSchemes = [];
+                }
+                
                 console.log("Extracted schemes array:", allSchemes);
                 console.log("Total schemes loaded:", allSchemes.length);
 
