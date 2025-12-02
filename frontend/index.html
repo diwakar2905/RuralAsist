@@ -810,17 +810,18 @@
             
             noResults.classList.add('d-none');
             
+            // Show first 5 FAQs expanded by default
             container.innerHTML = faqs.map((faq, index) => `
                 <div class="accordion-item">
                     <h3 class="accordion-header" id="heading${faq.id}">
-                        <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${faq.id}" aria-expanded="${index === 0}" aria-controls="collapse${faq.id}">
+                        <button class="accordion-button ${index < 5 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${faq.id}" aria-expanded="${index < 5}" aria-controls="collapse${faq.id}">
                             <div>
                                 <div class="faq-category-badge">${faq.category}</div>
                                 <div>${faq.question}</div>
                             </div>
                         </button>
                     </h3>
-                    <div id="collapse${faq.id}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${faq.id}" data-bs-parent="#faqAccordion">
+                    <div id="collapse${faq.id}" class="accordion-collapse collapse ${index < 5 ? 'show' : ''}" aria-labelledby="heading${faq.id}">
                         <div class="accordion-body">
                             ${faq.answer}
                         </div>
