@@ -927,10 +927,24 @@
             
             console.log("Starting initialization...");
             checkOnlineStatus();
-            loadSchemes();
+            
+            // Load schemes with a small delay to ensure everything is ready
+            setTimeout(() => {
+                console.log("Loading schemes after delay...");
+                loadSchemes();
+            }, 100);
             
             // Periodically check online status
             setInterval(checkOnlineStatus, 30000);
+        });
+
+        // Also try loading on window load as backup
+        window.addEventListener("load", () => {
+            console.log("Window loaded - backup scheme loading");
+            if (allSchemes.length === 0) {
+                console.log("No schemes loaded yet, trying again...");
+                setTimeout(loadSchemes, 200);
+            }
         });
 
         // Listen for online/offline events
