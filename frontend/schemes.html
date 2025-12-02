@@ -548,17 +548,17 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/schemes.js"></script>
     <script>
-        const BACKEND_URL = "http://127.0.0.1:8001";
+        const BACKEND_URL = "https://rural-asist.onrender.com";
         const CACHE_KEY = "schemes_cache";
         const CACHE_TIME = 60 * 60 * 1000; // 1 hour
-        const LANG_KEY = 'ruralassist_language';
+        const SCHEMES_LANG_KEY = 'ruralassist_language';
 
         let allSchemes = [];
         let isOnline = false;
 
         // Get current language
         function getCurrentLang() {
-            return localStorage.getItem(LANG_KEY) || 'en';
+            return localStorage.getItem(SCHEMES_LANG_KEY) || 'en';
         }
 
         // Translations for scheme cards

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // API Configuration
-    const API_BASE_URL = "http://127.0.0.1:8000";
+    const SCHEMES_API_BASE_URL = "https://rural-asist.onrender.com";
     
     // Initialize AOS
     if (typeof AOS !== 'undefined') {
@@ -143,21 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filters.state) params.append('state', filters.state);
         if (filters.category) params.append('category', filters.category);
 
-        const url = `http://localhost:8000/schemes?${params.toString()}`;
+        const url = `${SCHEMES_API_BASE_URL}/schemes?${params.toString()}`;
 
         try {
-    async function fetchSchemesData(url) {
-        try {
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching schemes:', error);
-            throw error;
-        }
-    }
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const schemes = await response.json();
             renderSchemes(schemes);

@@ -1,6 +1,6 @@
 // Use global config if available, fallback to direct values
-const API_BASE_URL = window.AppConfig?.API_BASE_URL || "http://127.0.0.1:8000";
-const LANG_KEY = window.AppConfig?.STORAGE_KEYS?.LANGUAGE || 'ruralassist_language';
+const CHAT_API_BASE_URL = window.AppConfig?.API_BASE_URL || "https://rural-asist.onrender.com";
+const CHAT_LANG_KEY = window.AppConfig?.STORAGE_KEYS?.LANGUAGE || 'ruralassist_language';
 const INIT_RETRY_DELAY = window.AppConfig?.RETRY_DELAYS?.CHAT_INIT || 100; // ms
 const MAX_INIT_RETRIES = window.AppConfig?.MAX_RETRIES?.CHAT_INIT || 20;
 
@@ -13,7 +13,7 @@ let initRetries = 0;
 
 // Get current language
 function getCurrentLang() {
-    return localStorage.getItem(LANG_KEY) || 'en';
+    return localStorage.getItem(CHAT_LANG_KEY) || 'en';
 }
 
 // Global handler for inline events - defined early so it's available for inline handlers
@@ -169,7 +169,7 @@ function setSendingEnabled(enabled) {
 
 async function checkOnlineStatus() {
     try {
-        const res = await fetch(`${API_BASE_URL}/`, { method: 'GET' });
+        const res = await fetch(`${CHAT_API_BASE_URL}/`, { method: 'GET' });
         isOnline = res.ok;
         offlineMessageShown = false;
     } catch {
@@ -183,7 +183,7 @@ async function logActivity(type, description) {
     if (!token) return;
     
     try {
-        await fetch(`${API_BASE_URL}/profile/activity`, {
+        await fetch(`${CHAT_API_BASE_URL}/profile/activity`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -235,8 +235,8 @@ async function sendMessage() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-        console.log("Chatbot: Sending message to", `${API_BASE_URL}/chatbot/message`);
-        const res = await fetch(`${API_BASE_URL}/chatbot/message`, {
+        console.log("Chatbot: Sending message to", `${CHAT_API_BASE_URL}/chatbot/message`);
+        const res = await fetch(`${CHAT_API_BASE_URL}/chatbot/message`, {
             method: "POST",
             headers,
             body: JSON.stringify({ query: text })
