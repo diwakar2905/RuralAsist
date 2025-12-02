@@ -546,7 +546,6 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="assets/js/config.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/schemes.js"></script>
     <script>
         const BACKEND_URL = "https://rural-asist.onrender.com";
         const CACHE_KEY = "schemes_cache";
@@ -666,6 +665,8 @@
         // ============================================================
 
         async function loadSchemes() {
+            console.log("Loading schemes from:", `${BACKEND_URL}/schemes/local`);
+            
             // Show spinner
             document.getElementById("spinner").classList.add("active");
             document.getElementById("schemesGrid").innerHTML = "";
@@ -673,7 +674,8 @@
             try {
                 // Try cache first
                 const cached = getCachedSchemes();
-                if (cached) {
+                if (cached && cached.length > 0) {
+                    console.log("Using cached schemes:", cached.length);
                     allSchemes = cached;
                     renderSchemes(allSchemes);
                     document.getElementById("spinner").classList.remove("active");
@@ -681,42 +683,73 @@
                 }
 
                 // Fetch from backend
+                console.log("Fetching fresh schemes from backend...");
                 const response = await fetch(`${BACKEND_URL}/schemes/local`);
-                if (!response.ok) throw new Error("Failed to load schemes");
+                console.log("Response status:", response.status, response.statusText);
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load schemes`);
 
                 const data = await response.json();
+                console.log("Received data:", data);
+                
                 allSchemes = data.schemes || [];
+                console.log("Total schemes loaded:", allSchemes.length);
 
                 // Cache locally
-                setCachedSchemes(allSchemes);
+                if (allSchemes.length > 0) {
+                    setCachedSchemes(allSchemes);
+                    console.log("Schemes cached successfully");
+                }
 
                 renderSchemes(allSchemes);
             } catch (error) {
                 console.error("Error loading schemes:", error);
-                showNotification("❌ Failed to load schemes", "error");
+                showNotification(`❌ Failed to load schemes: ${error.message}`, "error");
                 document.getElementById("emptyState").style.display = "block";
+                // Show error in grid as well
+                document.getElementById("schemesGrid").innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Failed to Load Schemes</h4>
+                            <p>Error: ${error.message}</p>
+                            <hr>
+                            <p class="mb-0">Please check your internet connection and try refreshing the page.</p>
+                        </div>
+                    </div>
+                `;
             } finally {
                 document.getElementById("spinner").classList.remove("active");
             }
         }
 
         function renderSchemes(schemes) {
+            console.log("renderSchemes called with:", schemes ? schemes.length : 0, "schemes");
+            
             const grid = document.getElementById("schemesGrid");
             const emptyState = document.getElementById("emptyState");
             const lang = getCurrentLang();
             const texts = schemeTexts[lang];
 
+            if (!grid) {
+                console.error("schemesGrid element not found!");
+                return;
+            }
+
             if (!schemes || schemes.length === 0) {
+                console.log("No schemes to render");
                 grid.innerHTML = "";
                 emptyState.style.display = "block";
                 document.getElementById("totalSchemes").textContent = "0";
                 return;
             }
 
+            console.log("Rendering", schemes.length, "schemes to grid");
             emptyState.style.display = "none";
             document.getElementById("totalSchemes").textContent = schemes.length;
 
-            grid.innerHTML = schemes.map(scheme => `
+            grid.innerHTML = schemes.map((scheme, index) => {
+                console.log(`Rendering scheme ${index + 1}:`, scheme.title);
+                return `
                 <div class="scheme-card" data-id="${scheme.id}">
                     <div class="scheme-category">${formatCategory(scheme.category)}</div>
                     <h3 class="scheme-title">${scheme.title}</h3>
@@ -724,7 +757,7 @@
                     
                     <div class="scheme-benefit">
                         <strong>${texts.benefits}</strong><br>
-                        ${scheme.benefits.substring(0, 100)}...
+                        ${scheme.benefits ? scheme.benefits.substring(0, 100) + '...' : 'No benefits information available.'}
                     </div>
 
                     <div class="scheme-tags">
@@ -743,7 +776,10 @@
                         </a>
                     </div>
                 </div>
-            `).join("");
+            `;
+            }).join("");
+            
+            console.log("Grid HTML updated, total cards:", grid.children.length);
         }
 
         function formatCategory(cat) {
@@ -872,6 +908,24 @@
         // ============================================================
 
         document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM Content Loaded - Initializing schemes page");
+            console.log("Backend URL:", BACKEND_URL);
+            console.log("Checking for required elements...");
+            
+            const grid = document.getElementById("schemesGrid");
+            const spinner = document.getElementById("spinner");
+            const emptyState = document.getElementById("emptyState");
+            
+            console.log("schemesGrid found:", !!grid);
+            console.log("spinner found:", !!spinner);
+            console.log("emptyState found:", !!emptyState);
+            
+            if (!grid) {
+                console.error("Critical error: schemesGrid element not found!");
+                return;
+            }
+            
+            console.log("Starting initialization...");
             checkOnlineStatus();
             loadSchemes();
             
