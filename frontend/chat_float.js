@@ -65,7 +65,12 @@ function safeInit() {
         console.log("Chatbot: Float button clicked");
         chatPopup.classList.add("active");
         chatPopup.style.display = "flex";
-        if (!box.dataset.greeted) greet();
+        // Always greet when opening chat
+        setTimeout(() => {
+            if (!box.dataset.greeted) {
+                greet();
+            }
+        }, 100);
     });
     
     // Close Popup
