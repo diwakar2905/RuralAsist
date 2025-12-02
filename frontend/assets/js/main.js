@@ -33,15 +33,15 @@ function logout() {
 }
 
 // --- CONFIGURATION ---
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://rural-asist.onrender.com";
 
 // --- LANGUAGE TOGGLE FUNCTIONALITY ---
-const LANG_KEY = 'ruralassist_language';
-let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+const MAIN_LANG_KEY = 'ruralassist_language';
+let currentLang = localStorage.getItem(MAIN_LANG_KEY) || 'en';
 
 function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'hi' : 'en';
-    localStorage.setItem(LANG_KEY, currentLang);
+    localStorage.setItem(MAIN_LANG_KEY, currentLang);
     applyLanguage();
     updateLangToggleUI();
 }
