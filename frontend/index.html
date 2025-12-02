@@ -353,51 +353,59 @@
         </div>
 
         <!-- 6. FAQ Section -->
-        <section id="faq" class="faq-section py-4">
+        <section id="faq" class="faq-section py-5">
             <div class="content-wrapper">
                 <!-- Header -->
-                <div class="text-center mb-4" data-aos="fade-up">
-                    <h2 class="display-6 fw-bold" data-lang-en="Frequently Asked Questions" data-lang-hi="अक्सर पूछे जाने वाले प्रश्न">Frequently Asked Questions</h2>
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="display-6 fw-bold mb-3" data-lang-en="Frequently Asked Questions" data-lang-hi="अक्सर पूछे जाने वाले प्रश्न">Frequently Asked Questions</h2>
                     <p class="lead text-muted" data-lang-en="Find quick answers to common questions about RuralAsist features" data-lang-hi="RuralAsist सुविधाओं के बारे में सामान्य प्रश्नों के त्वरित उत्तर खोजें">Find quick answers to common questions about RuralAsist features</p>
                 </div>
 
                 <!-- Search Box -->
-                <div class="row justify-content-center mb-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="row justify-content-center mb-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="col-lg-8">
                         <div class="faq-search-wrapper">
                             <div class="input-group faq-search-group">
-                                <span class="input-group-text bg-white border-end-0">
+                                <span class="input-group-text">
                                     <i class="bi bi-search text-muted"></i>
                                 </span>
-                                <input type="text" id="faq-search" class="form-control border-start-0 faq-search-input" 
-                                       placeholder="Search FAQs... (e.g., 'login', 'schemes', 'OCR')" data-lang-en-placeholder="Search FAQs... (e.g., 'login', 'schemes', 'OCR')" data-lang-hi-placeholder="FAQ खोजें... (जैसे, 'लॉगिन', 'योजनाएं', 'OCR')">
-                                <button class="btn btn-primary faq-search-btn" type="button" onclick="searchFAQ()">
-                                    <i class="bi bi-search me-2"></i><span data-lang-en="Search" data-lang-hi="खोजें">Search</span>
-                                </button>
+                                <input type="text" id="faq-search-input" class="form-control faq-search-input" 
+                                       placeholder="Search FAQs... (e.g., 'login', 'schemes', 'OCR')" 
+                                       data-lang-en-placeholder="Search FAQs... (e.g., 'login', 'schemes', 'OCR')" 
+                                       data-lang-hi-placeholder="FAQ खोजें... (जैसे, 'लॉगिन', 'योजनाएं', 'OCR')">
                             </div>
-                            <div class="faq-search-hints mt-2">
-                                <span class="text-muted small" data-lang-en="Popular: " data-lang-hi="लोकप्रिय: ">Popular: </span>
-                                <button class="faq-hint-tag" onclick="quickSearch('login')" data-lang-en="Login" data-lang-hi="लॉगिन">Login</button>
-                                <button class="faq-hint-tag" onclick="quickSearch('schemes')" data-lang-en="Schemes" data-lang-hi="योजनाएं">Schemes</button>
-                                <button class="faq-hint-tag" onclick="quickSearch('OCR')" data-lang-en="OCR" data-lang-hi="OCR">OCR</button>
-                                <button class="faq-hint-tag" onclick="quickSearch('scam')" data-lang-en="Scam" data-lang-hi="धोखाधड़ी">Scam</button>
-                                <button class="faq-hint-tag" onclick="quickSearch('profile')" data-lang-en="Profile" data-lang-hi="प्रोफ़ाइल">Profile</button>
+                            <div class="faq-search-hints mt-3">
+                                <span class="text-muted small me-2" data-lang-en="Popular: " data-lang-hi="लोकप्रिय: ">Popular: </span>
+                                <button class="faq-hint-tag" data-category="login">Login</button>
+                                <button class="faq-hint-tag" data-category="schemes">Schemes</button>
+                                <button class="faq-hint-tag" data-category="ocr">OCR</button>
+                                <button class="faq-hint-tag" data-category="scam">Scam Report</button>
+                                <button class="faq-hint-tag" data-category="profile">Profile</button>
+                                <button class="faq-hint-tag" data-category="all">Show All</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Status -->
-                <p id="faq-status" class="text-center text-muted mb-4">
-                    <i class="bi bi-lightbulb me-2"></i><span data-lang-en="Showing popular FAQs. Type to search for specific topics." data-lang-hi="लोकप्रिय FAQ दिखाए जा रहे हैं। विशेष विषयों के लिए टाइप करें।">Showing popular FAQs. Type to search for specific topics.</span>
-                </p>
-
-                <!-- FAQ Results Grid -->
-                <div id="faq-results" class="faq-accordion-grid" data-aos="fade-up" data-aos-delay="200"></div>
+                <!-- FAQ Results -->
+                <div class="row" data-aos="fade-up" data-aos-delay="200">
+                    <div class="col-12">
+                        <div id="faq-results" class="faq-accordion">
+                            <div class="accordion" id="faqAccordion">
+                                <!-- FAQ items will be populated here -->
+                            </div>
+                        </div>
+                        <div id="faq-no-results" class="text-center py-5 d-none">
+                            <i class="bi bi-search text-muted" style="font-size: 3rem; opacity: 0.3;"></i>
+                            <h5 class="mt-3 text-muted">No FAQs found</h5>
+                            <p class="text-muted">Try searching with different keywords or check all FAQs</p>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Back to top -->
-                <div class="mt-4 text-center">
-                    <a href="#top" class="btn btn-outline-secondary btn-sm">
+                <div class="mt-5 text-center">
+                    <a href="#top" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-up me-2"></i><span data-lang-en="Back to top" data-lang-hi="ऊपर जाएं">Back to top</span>
                     </a>
                 </div>
@@ -405,55 +413,118 @@
         </section>
 
         <style>
-            /* Enhanced FAQ Search Wrapper */
+            /* FAQ Section Styling */
+            .faq-section {
+                background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+                border-top: 1px solid rgba(0,0,0,0.04);
+            }
+            
             .faq-search-wrapper {
                 background: white;
-                padding: 24px;
-                border-radius: 20px;
+                padding: 2rem;
+                border-radius: 16px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.08);
                 border: 1px solid rgba(0,0,0,0.04);
             }
             
             .faq-search-group {
-                border-radius: 50px;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            }
+            
+            .faq-search-group .input-group-text {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-right: none;
+                padding-left: 1rem;
+            }
+            
+            .faq-search-input {
+                border: 1px solid #e2e8f0;
+                border-left: none;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+            }
+            
+            .faq-search-input:focus {
+                box-shadow: 0 0 0 3px rgba(52,168,83,0.1);
+                border-color: #34A853;
+            }
+            
+            .faq-search-hints {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .faq-hint-tag {
+                background: rgba(52,168,83,0.1);
+                border: 1px solid rgba(52,168,83,0.2);
+                color: #34A853;
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            
+            .faq-hint-tag:hover,
+            .faq-hint-tag.active {
+                background: #34A853;
+                color: white;
+                transform: translateY(-1px);
+            }
+            
+            /* FAQ Accordion Styling */
+            .accordion-item {
+                border: 1px solid rgba(0,0,0,0.06);
+                border-radius: 12px !important;
+                margin-bottom: 1rem;
                 overflow: hidden;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             }
             
-            .faq-search-group .input-group-text {
-                border: 2px solid #e5e7eb;
-                border-right: none;
-                padding-left: 20px;
-                border-radius: 50px 0 0 50px;
-            }
-            
-            .faq-search-input {
-                border: 2px solid #e5e7eb;
-                border-left: none;
-                padding: 14px 20px;
-                font-size: 16px;
-            }
-            
-            .faq-search-input:focus {
-                box-shadow: none;
-                border-color: #34A853;
-            }
-            
-            .faq-search-group .input-group-text,
-            .faq-search-input:focus + .input-group-text {
-                border-color: #e5e7eb;
-            }
-            
-            .faq-search-input:focus ~ .input-group-text {
-                border-color: #34A853;
-            }
-            
-            .faq-search-btn {
-                border-radius: 0 50px 50px 0 !important;
-                padding: 14px 28px;
+            .accordion-button {
                 font-weight: 600;
-                background: linear-gradient(135deg, #34A853, #2E8E46);
+                font-size: 1rem;
+                padding: 1.25rem;
+                background: white;
                 border: none;
+                color: #1a202c;
+            }
+            
+            .accordion-button:not(.collapsed) {
+                background: #f7fafc;
+                color: #34A853;
+                box-shadow: none;
+            }
+            
+            .accordion-button:focus {
+                box-shadow: 0 0 0 3px rgba(52,168,83,0.1);
+            }
+            
+            .accordion-body {
+                padding: 1.25rem;
+                background: #fafbfc;
+                color: #4a5568;
+                line-height: 1.7;
+            }
+            
+            .faq-category-badge {
+                display: inline-block;
+                background: rgba(52,168,83,0.1);
+                color: #34A853;
+                padding: 0.25rem 0.5rem;
+                border-radius: 6px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+            }
+        </style>
             }
             
             .faq-search-btn:hover {
@@ -637,16 +708,152 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/config.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/faq.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        // FAQ Data
+        const faqData = [
+            {
+                id: 'login-otp',
+                category: 'login',
+                question: 'How do I log in with OTP?',
+                answer: 'Enter your email on the Login page, click "Send OTP", then enter the OTP sent to your email. This ensures secure email-based authentication for your account.'
+            },
+            {
+                id: 'schemes-find',
+                category: 'schemes',
+                question: 'Where can I find government schemes?',
+                answer: 'Visit the "Schemes" page to browse 150+ government schemes. Filter by category (Agriculture, Education, Health, Housing, Employment) or search by keywords. Each scheme shows detailed eligibility criteria, benefits, and application links.'
+            },
+            {
+                id: 'ocr-scan',
+                category: 'ocr',
+                question: 'How do I scan a document (OCR)?',
+                answer: 'Go to OCR page, upload an image (JPG, PNG) or PDF document up to 10MB, click "Extract Text" to get instant text recognition. Supports both English and Hindi text. Works best with clear, well-lit images.'
+            },
+            {
+                id: 'scam-report',
+                category: 'scam',
+                question: 'How do I report a scam or suspicious call?',
+                answer: 'Visit the "Report Scam" page, enter the phone number or message content, describe the incident, and submit. Our AI will analyze the content for scam patterns and add it to our database to protect other users.'
+            },
+            {
+                id: 'profile-create',
+                category: 'profile',
+                question: 'How do I create and manage my profile?',
+                answer: 'After logging in, go to your Profile page to add personal details, upload documents, track scheme applications, and manage your preferences. Keep your profile updated to get relevant scheme recommendations.'
+            },
+            {
+                id: 'schemes-eligible',
+                category: 'schemes',
+                question: 'How do I know if I\'m eligible for a scheme?',
+                answer: 'Each scheme page shows detailed eligibility criteria including age, income, location, and other requirements. You can also use the filter options to narrow down schemes based on your specific situation.'
+            },
+            {
+                id: 'digilocker-guide',
+                category: 'profile',
+                question: 'What is DigiLocker and how do I use it?',
+                answer: 'DigiLocker is a government platform to store digital copies of your documents like Aadhaar, PAN card, etc. Check our DigiLocker Guide for step-by-step instructions on setting up and using this secure document storage system.'
+            },
+            {
+                id: 'language-switch',
+                category: 'general',
+                question: 'Can I use the website in Hindi?',
+                answer: 'Yes! Click the language toggle (EN/हि) in the top navigation to switch between English and Hindi. The entire website interface will change to your selected language.'
+            }
+        ];
+        
+        let filteredFaqs = faqData;
+        
+        // Initialize FAQ functionality
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize AOS
             AOS.init({
                 duration: 800,
                 once: true,
             });
+            
+            // Load initial FAQs
+            renderFaqs(faqData);
+            
+            // Search input handler
+            const searchInput = document.getElementById('faq-search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase().trim();
+                    filterFaqs(query);
+                });
+            }
+            
+            // Category filter handlers
+            document.querySelectorAll('.faq-hint-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    filterByCategory(category);
+                    
+                    // Update active state
+                    document.querySelectorAll('.faq-hint-tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         });
+        
+        function renderFaqs(faqs) {
+            const container = document.getElementById('faqAccordion');
+            const noResults = document.getElementById('faq-no-results');
+            
+            if (faqs.length === 0) {
+                container.innerHTML = '';
+                noResults.classList.remove('d-none');
+                return;
+            }
+            
+            noResults.classList.add('d-none');
+            
+            container.innerHTML = faqs.map((faq, index) => `
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="heading${faq.id}">
+                        <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${faq.id}" aria-expanded="${index === 0}" aria-controls="collapse${faq.id}">
+                            <div>
+                                <div class="faq-category-badge">${faq.category}</div>
+                                <div>${faq.question}</div>
+                            </div>
+                        </button>
+                    </h3>
+                    <div id="collapse${faq.id}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${faq.id}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ${faq.answer}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function filterFaqs(query) {
+            if (!query) {
+                filteredFaqs = faqData;
+            } else {
+                filteredFaqs = faqData.filter(faq => 
+                    faq.question.toLowerCase().includes(query) ||
+                    faq.answer.toLowerCase().includes(query) ||
+                    faq.category.toLowerCase().includes(query)
+                );
+            }
+            renderFaqs(filteredFaqs);
+        }
+        
+        function filterByCategory(category) {
+            if (category === 'all') {
+                filteredFaqs = faqData;
+            } else {
+                filteredFaqs = faqData.filter(faq => faq.category === category);
+            }
+            renderFaqs(filteredFaqs);
+            
+            // Clear search input
+            const searchInput = document.getElementById('faq-search-input');
+            if (searchInput) searchInput.value = '';
+        }
     </script>
     
     <!-- Floating Chatbot Button -->
